@@ -4,7 +4,9 @@ Simple SDK for automatic tracking of dependencies between separate components(se
 across multiple APKs.
 
 #### Feautres:
-* auto-start component on device boot, after a specific dependency started or after all 
+* auto-start component on device boot
+* auto-start component after package update
+* auto-start component after a specific dependency started or after all 
 dependencies have been started
 * receive runtime notifications when dependency have stopped or started to know when dependency 
 can be used.
@@ -15,9 +17,9 @@ can be used.
        
    ```
    dependencies {
-       compile 'com.github.nicktgn.android:android-dependency-tracker:0.1.0'
+       compile 'com.github.nicktgn.android:android-dependency-tracker:0.2.0'
        // use the following if you need mvp support from TinyAndroidMVP https://github.com/nicktgn/TinyAndroidMVP
-       compile 'com.github.nicktgn.android:android-dependency-tracker-mvp:0.1.0'
+       compile 'com.github.nicktgn.android:android-dependency-tracker-mvp:0.2.0'
    }
    ```
 
@@ -51,6 +53,7 @@ can be used.
                android:exported="true">
                <intent-filter>
                    <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                   <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
                    <action android:name="com.gitlab.nicktgn.android.dependencytracker.action.DEPENDENCY_STARTED"/>
                    <action android:name="com.gitlab.nicktgn.android.dependencytracker.action.DEPENDENCY_STOPPED"/>
                    <category android:name="android.intent.category.DEFAULT"/>
@@ -118,6 +121,19 @@ can be used.
      }
      ``` 
      If this component does not need to be started on device boot, simply return `null`.
+     
+*  **`public abstract Intent restartOnUpdate(Context context)`**
+       
+     * `context` - application context
+          
+     Override this method and return an `Intent` that can be used to re-start your component
+     after the application package of your component has been updated, e.g.:
+     ```
+     public Intent restartOnUpdate(Context context){
+        return new Intent(context, MyAwesomeService.class);
+     }
+     ``` 
+     If this component does not need to be re-started after package update, simply return `null`.     
      
 *  **`public abstract Intent startOnDependecyStared(Context context, String dependency)`**
 

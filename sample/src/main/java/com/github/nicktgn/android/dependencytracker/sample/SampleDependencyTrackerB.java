@@ -59,6 +59,12 @@ public class SampleDependencyTrackerB extends DependencyTracker {
     }
 
     @Override
+    public Intent restartOnUpdate(Context context) {
+        Log.d(TAG, "Re-starting on update...");
+        return null;
+    }
+
+    @Override
     public Intent startOnDependecyStared(Context context, String dependency) {
         Log.d(TAG, "Starting on dependency " + dependency + "satisfied");
         return null;

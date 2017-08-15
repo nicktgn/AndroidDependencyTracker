@@ -30,7 +30,7 @@ ext {
     siteUrl = 'https://github.com/nicktgn/AndroidDependencyTracker'
     gitUrl = 'https://github.com/nicktgn/AndroidDependencyTracker.git'
 
-    libraryVersion = '0.1.0'
+    libraryVersion = '0.2.0'
 
     developerId = 'nicktgn'
     developerName = 'Nick Tsygankov'

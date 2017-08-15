@@ -23,6 +23,7 @@ import android.content.Intent;
 
 public abstract class DependencyTracker extends BroadcastReceiver {
     static final String BOOT_ACTION = "android.intent.action.BOOT_COMPLETED";
+    static final String UPDATE_ACTION = "android.intent.action.MY_PACKAGE_REPLACED";
     static final String DEPENDENCY_STARTED_ACTION = "com.gitlab.nicktgn.android.dependencytracker.action.DEPENDENCY_STARTED";
     static final String DEPENDENCY_STOPPED_ACTION = "com.gitlab.nicktgn.android.dependencytracker.action.DEPENDENCY_STOPPED";
     static final String EXTRA_COMPONENT_NAME = "com.gitlab.nicktgn.android.dependencytracker.extra.COMPONENT_NAME";
@@ -41,6 +42,8 @@ public abstract class DependencyTracker extends BroadcastReceiver {
     public abstract Class getComponent();
 
     public abstract Intent startOnBoot(Context context);
+
+    public abstract Intent restartOnUpdate(Context context);
 
     public abstract Intent startOnDependecyStared(Context context, String dependency);
 
@@ -115,6 +118,12 @@ public abstract class DependencyTracker extends BroadcastReceiver {
         // BOOT_COMPLETED” start Service
         if (intent.getAction().equals(BOOT_ACTION)) {
             Intent startIntent = startOnBoot(context);
+            if(startIntent != null){
+                startComponent(context, startIntent);
+            }
+        }
+        else if(intent.getAction().equals(UPDATE_ACTION)){
+            Intent startIntent = restartOnUpdate(context);
             if(startIntent != null){
                 startComponent(context, startIntent);
             }
